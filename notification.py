@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
+from .pushclient import PushClientMixin
 
 __all__ = ["Notification", "AndroidNotification", "IosNotification"]
 
@@ -57,6 +58,12 @@ class Notification(object):
     def to_json(self):
         raise NotImplementedError()
 
+    def set_alias(self, alias):
+        if isinstance(alias, (tuple, list)):
+            self.alias = ','.join(str(e) for e in alias)
+        else:
+            self.alias = str(alias)
+
     @property
     def start_time(self):
         return self.policy.start_time
@@ -82,9 +89,12 @@ class Notification(object):
         self.policy.max_send_num = v
 
 
-class AndroidNotification(Notification):
+class AndroidNotification(Notification, PushClientMixin):
 
     def __init__(self, app_key, master_secret, ptype):
+        """
+
+        """
         super(AndroidNotification, self).__init__(app_key, master_secret, ptype)
         self.payload = AndPayload()
         self.payload.body = self.body = AndBody()
@@ -257,7 +267,7 @@ class AndroidNotification(Notification):
         self.payload.extra = v
 
 
-class IosNotification(Notification):
+class IosNotification(Notification, PushClientMixin):
 
     def __init__(self, app_key, master_secret, ptype):
         super(IosNotification, self).__init__(app_key, master_secret, ptype)

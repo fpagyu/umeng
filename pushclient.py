@@ -5,7 +5,7 @@ import json
 import requests
 
 
-class PushClient(object):
+class PushClientMixin(object):
 
     USER_AGENT = "Mozilla/5.0"
     HOST = "http://msg.umeng.com"
@@ -21,9 +21,9 @@ class PushClient(object):
             m = hashlib.md5(s)
         return m.hexdigest()
 
-    def send(self, msg):
-        postBody = json.dumps(msg.to_json())
-        sign = self.__md5('{}{}{}{}'.format('POST', self.API_URL, postBody, msg.master_screte))
+    def send(self):
+        postBody = json.dumps(self.to_json())
+        sign = self.__md5('{}{}{}{}'.format('POST', self.API_URL, postBody, self.master_screte))
         #print sign, postBody
         r = requests.post(self.API_URL + '?sign=' + sign, data=postBody)
         #print r.status_code, r.text

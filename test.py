@@ -1,13 +1,11 @@
-# umeng
-umeng 推送 python sdk
+# coding: utf-8
 
-doc: https://developer.umeng.com/docs/66632/detail/68343
-
-使用例子
+from .notification import AndroidNotification, IosNotification
 
 
-```
-# Android
+key = ""
+secret = ""
+
 
 def android_noti():
     noti = AndroidNotification(key, secret, "customizedcast")
@@ -34,7 +32,6 @@ def android_noti():
     noti.send()
 
 
-# ios
 def ios_noti():
     noti = AndroidNotification(key, secret, "customizedcast")
     noti.alias_type = "user_id"
@@ -51,6 +48,12 @@ def ios_noti():
     noti.set_alias([1, 2, 3])
 
     noti.send()
-```
 
-可根据自身业务情况再进行合理封装
+
+def main():
+    android_noti()
+    ios_noti()
+
+
+if __name__ == "__main__":
+    main()
